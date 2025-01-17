@@ -2,29 +2,30 @@
 using System.Security.Cryptography;
 using mathGame.athallie;
 
-Console.WriteLine("Welcome to Math Game!");
-Console.WriteLine("What do you want to do?");
-Console.WriteLine("""
-    [A] Addition
-    [B] Substraction
-    [C] Multiplication
-    [D] Division
-    """);
+play();
 
-//Input
-string choice = Console.ReadLine();
-GameUtils gameUtils = new GameUtils(choice);
+void play()
+{
+    GameUtils.showWelcomePrompt();
+    GameUtils gameUtils = new GameUtils();
+    while (true)
+    {
+        GameUtils.showMenu();
 
-//Output: Question
-var question = gameUtils.getQuestion();
-Console.WriteLine(question);
+        //Get user's choice of game
+        string choice = Console.ReadLine();
+        gameUtils.setChoice(choice);
+        //Get random math question involving user's choice of game
+        if (gameUtils.processChoice() == -1) { continue; };
+        var question = gameUtils.getQuestion();
+        if (question == "1") { continue; }
+        Console.WriteLine("Question: " + question);
 
-//Input: Answer
-string answer = Console.ReadLine();
+        //Get user's answer to the question
+        Console.Write("Answer: ");
+        string answer = Console.ReadLine();
+        Console.WriteLine();
 
-//Output: Result
-bool result = gameUtils.validateAnswer(answer);
-switch(result) {
-    case true: Console.WriteLine("You're correct. The answer is " + answer); break ;
-    case false: Console.WriteLine("You're wrong. The answer is " + gameUtils.getAnswer()); break;
+        gameUtils.showResult(answer);
+    }
 }
