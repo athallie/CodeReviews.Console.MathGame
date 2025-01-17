@@ -35,9 +35,14 @@ namespace mathGame.athallie
             }
             int[] ints = [
                 RandomNumberGenerator.GetInt32(101),
-        RandomNumberGenerator.GetInt32(101)];
+                RandomNumberGenerator.GetInt32(101)
+            ];
             if (op == "/")
             {
+                ints = [
+                    RandomNumberGenerator.GetInt32(1, 101),
+                    RandomNumberGenerator.GetInt32(1, 101)
+                ];
                 while (ints[0] % ints[1] != 0)
                 {
                     ints = [
@@ -122,15 +127,27 @@ namespace mathGame.athallie
         public void showResult(string answer)
         {
             var result = validateAnswer(answer);
+            var date = DateTime.Now;
             switch (result)
             {
                 case true: 
                     Console.WriteLine("You're correct. The answer is " + answer);
-                    _gameHistory.Add($"Won | {_question} | You answered {answer}");
+                    _gameHistory.Add($"""
+                        {date} >> WON
+                        Question        :   {_question}
+                        Your answer     :   {answer}
+                        ---------------------------------
+                        """);
                     break;
                 case false: 
                     Console.WriteLine("You're wrong. The answer is " + getAnswer());
-                    _gameHistory.Add($"Lost | {_question} | You answered {answer} | Correct answer is {getAnswer()}");
+                    _gameHistory.Add($"""
+                        {date} >> LOST
+                        Question        :   {_question}
+                        Correct answer  :   {getAnswer()}
+                        Your answer     :   {answer}
+                        ---------------------------------
+                        """);
                     break;
             }
         }
@@ -150,7 +167,7 @@ namespace mathGame.athallie
             Console.WriteLine();
             Console.WriteLine($"""
                 History
-                ------------------
+                ---------------------------------
                 """);
             if ( _gameHistory != null && _gameHistory.Count > 0 )
             {
@@ -167,6 +184,7 @@ namespace mathGame.athallie
             Console.WriteLine($"""
                 Welcome to Math Game!
                 ---------------------
+                Today's Date: {DateTime.Now}
                 """);
         }
 
